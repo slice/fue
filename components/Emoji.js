@@ -1,7 +1,13 @@
+import ms from 'ms';
+
 import PropTypes from 'prop-types';
 
 const Emoji = ({ name, emoji, onDelete }) => {
   const isCustom = !isNaN(name) && String(name).length >= 18;
+
+  const lastUsed = emoji.recentUses.length !== 0
+    ? ms(Date.now() - Math.max(...emoji.recentUses))
+    : 'a while';
 
   return (
     <div className='emoji'>
@@ -13,9 +19,14 @@ const Emoji = ({ name, emoji, onDelete }) => {
         {isCustom ? <img src={`https://cdn.discordapp.com/emojis/${name}.png`} alt={name}/> : name}
       </div>
 
-      <div className='uses'>
-        <strong>{emoji.totalUses}</strong>{' '}
-        total use{emoji.totalUses === 1 ? '' : 's'}
+      <div className='parts'>
+        <div className='uses'>
+          <strong>{emoji.totalUses}</strong>{' '}
+          total use{emoji.totalUses === 1 ? '' : 's'}
+        </div>
+        <div className='last-used muted'>
+          last used {lastUsed} ago
+        </div>
       </div>
 
       <style jsx>{`
@@ -27,6 +38,19 @@ const Emoji = ({ name, emoji, onDelete }) => {
           width: 32px;
           height: 32px;
           object-fit: scale-down;
+        }
+
+        .emoji .parts {
+          display: flex;
+          flex-flow: row nowrap;
+        }
+
+        .emoji .parts > div:not(:last-child) {
+          margin-right: .5rem;
+        }
+
+        .muted {
+          color: #999;
         }
 
         .emoji {
