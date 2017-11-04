@@ -60,30 +60,45 @@ export default class Editor extends Component {
 
       return (
         <div id='editor'>
+          { /* export */ }
           <button type='button' onClick={this.handleExport}>export!</button>
           { this.state.exported ?
             <div id='export'>
               <textarea ref={(t) => { this.exportRef = t; } } value={this.state.exported} readOnly/><br/>
-              <small>press ctrl/cmd+c to copy!
+              <small>
+                press ctrl/cmd+c to copy!
                 then pop open the dev tools and <strong>replace</strong> the
                 stored <code>EmojiUsageHistory</code> value.
                 then refresh (ctrl/cmd+r)!
               </small>
             </div> : null }
-          <div className='listing'>
-            {emojiListing}
-          </div>
+
+          <div className='listing'>{emojiListing}</div>
         </div>
       );
     } else {
       return (
         <div id='staging'>
+          { /* help */ }
           <h3>fue</h3>
           <p>manage your <b>f</b>requently <b>u</b>sed <b>e</b>moji without shame. by slice</p>
+
+          { /* entry */ }
           <textarea onChange={this.handleJSON} placeholder='enter json here'></textarea>
           { this.state.error ? <div className='error'>{this.state.error}</div> : null }
+
+          { /* but how */ }
           <h4>how?</h4>
-          <p>open dev tools &rarr; application &rarr; <code>EmojiUsageHistory</code></p>
+          <p>
+            open dev tools &rarr; application &rarr; <code>EmojiUsageHistory</code><br/>
+            copy the json value and paste it into the textbox above. you&apos;ll be able to edit your frequently used emoji.
+            from there, you can export the new value.
+          </p>
+          <p><strong>to open:</strong></p>
+          <ul>
+            <li>win/linux: ctrl+shift+i</li>
+            <li>mac: cmd+opt+i</li>
+          </ul>
           <img style={{ width: '100%' }} src='https://i.imgur.com/bESNwYs.gif'/>
 
           <style jsx>{`
