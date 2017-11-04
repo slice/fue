@@ -64,7 +64,11 @@ export default class Editor extends Component {
           { this.state.exported ?
             <div id='export'>
               <textarea ref={(t) => { this.exportRef = t; } } value={this.state.exported} readOnly/><br/>
-              <small>press ctrl/cmd+c!</small>
+              <small>press ctrl/cmd+c to copy!
+                then pop open the dev tools and <strong>replace</strong> the
+                stored <code>EmojiUsageHistory</code> value.
+                then refresh (ctrl/cmd+r)!
+              </small>
             </div> : null }
           <div className='listing'>
             {emojiListing}
