@@ -84,6 +84,13 @@ export default class Editor extends Component {
           <h3>fue</h3>
           <p>manage your <b>f</b>requently <b>u</b>sed <b>e</b>moji without shame. by slice</p>
 
+          { /* disclaimer */ }
+          <h4>important disclaimer</h4>
+          <p>
+            this broke dejay&apos;s client. backup your client and frequently used json before
+            proceeding. i&apos;m not responsible for what happens while using this.
+          </p>
+
           { /* entry */ }
           <textarea onChange={this.handleJSON} placeholder='enter json here'></textarea>
           { this.state.error ? <div className='error'>{this.state.error}</div> : null }
