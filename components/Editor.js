@@ -44,6 +44,7 @@ export default class Editor extends Component {
 
   render() {
     if (this.state.editing && this.state.parsed) {
+      // sort the fue list
       const sortedEmoji = Object.entries(this.state.parsed)
         .sort((first, second) => second[1].totalUses - first[1].totalUses)
         .slice(0, UPPER_LIMIT);
@@ -91,7 +92,8 @@ export default class Editor extends Component {
           <h4>how?</h4>
           <p>
             open dev tools &rarr; application &rarr; <code>EmojiUsageHistory</code><br/>
-            copy the json value and paste it into the textbox above. you&apos;ll be able to edit your frequently used emoji.
+            copy the json value and paste it into the textbox above.
+            you&apos;ll be able to edit your frequently used emoji.
             from there, you can export the new value.
           </p>
           <p><strong>to open:</strong></p>
@@ -102,15 +104,15 @@ export default class Editor extends Component {
           <img style={{ width: '100%' }} src='https://i.imgur.com/bESNwYs.gif'/>
 
           <style jsx>{`
-          textarea, .error {
-            padding: .5rem;
-          }
+            textarea, .error {
+              padding: .5rem;
+            }
 
-          .error {
-            background: pink;
-            margin: 1rem;
-            font-family: monospace;
-          }
+            .error {
+              background: pink;
+              margin: 1rem;
+              font-family: monospace;
+            }
         `}</style>
         </div>
       );

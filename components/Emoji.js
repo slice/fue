@@ -25,6 +25,8 @@ const Emoji = ({ name, emoji, onDelete }) => {
 
         .emoji img {
           width: 32px;
+          height: 32px;
+          object-fit: scale-down;
         }
 
         .emoji {
