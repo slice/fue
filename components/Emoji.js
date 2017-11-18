@@ -23,10 +23,13 @@ const EmojiRender = styled.div`
   margin-right: 1rem;
 `;
 
-const EmojiImage = styled.img`
+const EmojiImage = styled.img.attrs({
+  draggable: false
+})`
   width: 32px;
   height: 32px;
   object-fit: scale-down;
+  cursor: pointer;
 `;
 
 const EmojiPlain = styled.span`
@@ -78,6 +81,8 @@ const Emoji = ({ name, emoji, onDelete, number }) => {
   // Humanly format the total uses according to the user's locale.
   const uses = new Intl.NumberFormat().format(emoji.totalUses);
 
+  const url = `https://cdn.discordapp.com/emojis/${name}.png`;
+
   return (
     <StyledEmoji>
       <Number>#{number + 1}</Number>
@@ -91,8 +96,10 @@ const Emoji = ({ name, emoji, onDelete, number }) => {
       <EmojiRender custom={isCustom}>
         {isCustom ? (
           <EmojiImage
-            src={`https://cdn.discordapp.com/emojis/${name}.png`}
+            src={url}
             alt={name}
+            title={name}
+            onClick={() => window.open(url)}
           />
         ) : (
           <EmojiPlain>{name}</EmojiPlain>
