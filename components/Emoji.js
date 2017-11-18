@@ -1,31 +1,22 @@
 import ms from 'ms';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Button } from './Controls';
 import { monospace } from '../styles/fonts';
 
 const Tools = styled.div`
   margin-right: 1rem;
 `;
 
-const DeleteButton = styled.button.attrs({
-  type: 'button',
+const DeleteButton = Button.extend.attrs({
   title: 'Delete'
-})`
-  background: #fff;
-  border: solid 1px #ddd;
-  border-radius: 0.15rem;
-  cursor: pointer;
-`;
+})``;
 
 const StyledEmoji = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   padding: 0.5rem;
-
-  &:nth-child(2n) {
-    background-color: #fafafa;
-  }
 `;
 
 const EmojiRender = styled.div`
@@ -63,7 +54,18 @@ const EmojiLastUsed = styled.div`
   color: #999;
 `;
 
-const Emoji = ({ name, emoji, onDelete }) => {
+const Number = styled.div`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-right: 1rem;
+  width: 3.5em;
+  text-align: center;
+
+  /* Make the numbers "monospaced". */
+  font-feature-settings: 'tnum';
+`;
+
+const Emoji = ({ name, emoji, onDelete, number }) => {
   // Determine whether this emoji is a custom emoji (not part of Unicode).
   const isCustom = !isNaN(name) && String(name).length >= 18;
 
@@ -78,6 +80,8 @@ const Emoji = ({ name, emoji, onDelete }) => {
 
   return (
     <StyledEmoji>
+      <Number>#{number + 1}</Number>
+
       {/* Emoji toolbar. A flexible strip of buttons that can be used to manage this emoji. */}
       <Tools>
         <DeleteButton onClick={onDelete}>🚮</DeleteButton>
@@ -106,9 +110,10 @@ const Emoji = ({ name, emoji, onDelete }) => {
 };
 
 Emoji.propTypes = {
-  name: PropTypes.string,
-  emoji: PropTypes.object,
-  onDelete: PropTypes.func
+  name: PropTypes.string.isRequired,
+  emoji: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  number: PropTypes.number.isRequired
 };
 
 export default Emoji;
