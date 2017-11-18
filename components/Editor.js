@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
+
 import styled from 'styled-components';
 import validator from 'is-my-json-valid';
 import Emoji from './Emoji';
@@ -68,21 +70,35 @@ const Listing = styled.div`
   margin: 1rem 0;
 `;
 
-export default class Editor extends Component {
-  state = {
+export type UsageHistoryEntry = {
+  totalUses: number,
+  recentUses: Array<number>,
+  frecency: number,
+  score: number
+};
+
+type UsageHistory = {
+  [identifier: string]: UsageHistoryEntry
+};
+
+type State = {
+  editing: boolean,
+  error: ?string,
+  parsed: ?UsageHistory,
+  exported: ?mixed
+};
+
+export default class Editor extends React.Component<{}, State> {
+  state: State = {
     editing: false,
     error: null,
     parsed: null,
     exported: null
   };
 
-  exportRef = null;
+  exportRef: ?HTMLTextAreaElement = null;
 
-  static propTypes = {
-    editing: PropTypes.bool
-  };
-
-  handleJSON = ({ target: { value: json } }) => {
+  handleJSON = ({ currentTarget: { value: json } }: any) => {
     const schema = createValidator();
     try {
       const parsed = JSON.parse(json);
@@ -104,7 +120,7 @@ export default class Editor extends Component {
   handleExport = () => {
     console.log('exporting');
     this.setState({ exported: JSON.stringify(this.state.parsed) }, () => {
-      this.exportRef.select();
+      if (this.exportRef) this.exportRef.select();
     });
   };
 
@@ -112,7 +128,11 @@ export default class Editor extends Component {
     if (this.state.editing && this.state.parsed) {
       // Sort the frequently used emoji by total uses, and truncate the array
       // by the upper limit constant.
-      const sortedEmoji = Object.entries(this.state.parsed)
+      const entries = Object.entries(this.state.parsed);
+
+      // Flow is disabled on the next line because of the lack of good support for Object.entries.
+      // See: https://github.com/facebook/flow/issues/2174
+      const sortedEmoji = entries /* $FlowFixMe */
         .sort((first, second) => second[1].totalUses - first[1].totalUses)
         .slice(0, UPPER_LIMIT);
 
@@ -124,6 +144,7 @@ export default class Editor extends Component {
           this.setState({ parsed: clone });
         };
         return (
+          /* $FlowFixMe (See above.) */
           <Emoji
             onDelete={onDelete}
             key={name}
@@ -149,7 +170,7 @@ export default class Editor extends Component {
                 innerRef={t => {
                   this.exportRef = t;
                 }}
-                onClick={() => this.exportRef.select()}
+                onClick={() => this.exportRef && this.exportRef.select()}
                 value={this.state.exported}
                 readOnly
               />

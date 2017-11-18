@@ -1,7 +1,8 @@
 {
-  "presets": ["next/babel", "stage-0"],
+  "presets": ["next/babel"],
   "plugins": [
     [
+      "transform-flow-strip-types",
       "styled-components",
       {
         "ssr": true,

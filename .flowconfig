@@ -1,0 +1,14 @@
+[ignore]
+# Ignore some broken files.
+.*/node_modules/npmconf/test/.*
+.*/node_modules/config-chain/test/broken.json
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+
+[strict]

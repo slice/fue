@@ -1,6 +1,8 @@
+// @flow
+
+import React from 'react';
 import ms from 'ms';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Button } from './Controls';
 import { monospace } from '../styles/fonts';
 
@@ -57,7 +59,7 @@ const EmojiLastUsed = styled.div`
   color: #999;
 `;
 
-const Number = styled.div`
+const Rank = styled.div`
   font-size: 2rem;
   font-weight: 700;
   margin-right: 1rem;
@@ -66,9 +68,19 @@ const Number = styled.div`
 
   /* Make the numbers "monospaced". */
   font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
 `;
 
-const Emoji = ({ name, emoji, onDelete, number }) => {
+import type { UsageHistoryEntry } from './Editor';
+
+type Props = {
+  name: string,
+  emoji: UsageHistoryEntry,
+  onDelete: () => void,
+  number: number
+};
+
+const Emoji = ({ name, emoji, onDelete, number }: Props) => {
   // Determine whether this emoji is a custom emoji (not part of Unicode).
   const isCustom = !isNaN(name) && String(name).length >= 18;
 
@@ -79,13 +91,14 @@ const Emoji = ({ name, emoji, onDelete, number }) => {
       : 'a while';
 
   // Humanly format the total uses according to the user's locale.
+  // $FlowFixMe
   const uses = new Intl.NumberFormat().format(emoji.totalUses);
 
   const url = `https://cdn.discordapp.com/emojis/${name}.png`;
 
   return (
     <StyledEmoji>
-      <Number>#{number + 1}</Number>
+      <Rank>#{number + 1}</Rank>
 
       {/* Emoji toolbar. A flexible strip of buttons that can be used to manage this emoji. */}
       <Tools>
@@ -114,13 +127,6 @@ const Emoji = ({ name, emoji, onDelete, number }) => {
       </EmojiMetadata>
     </StyledEmoji>
   );
-};
-
-Emoji.propTypes = {
-  name: PropTypes.string.isRequired,
-  emoji: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  number: PropTypes.number.isRequired
 };
 
 export default Emoji;
