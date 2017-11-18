@@ -1,11 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import validator from 'is-my-json-valid';
 import Emoji from './Emoji';
 import { Button } from './Controls';
 import { monospace } from '../styles/fonts';
 
 const UPPER_LIMIT = 100;
+const createValidator = () =>
+  validator({
+    required: true,
+    type: 'object',
+    minProperties: 1,
+    patternProperties: {
+      '^\\w|\\d+$': {
+        type: 'object',
+        properties: {
+          recentUses: { type: 'array', items: { type: 'number' } },
+          frecency: { type: 'number' },
+          score: { type: 'number' },
+          totalUses: { type: 'number' }
+        },
+        required: ['frecency', 'recentUses', 'score', 'totalUses']
+      }
+    },
+
+    // Disallow any other properties.
+    additionalProperties: false
+  });
 
 const Error = styled.div`
   white-space: pre;
@@ -13,6 +35,7 @@ const Error = styled.div`
   margin: 1rem;
   padding: 1rem;
   font-family: ${monospace};
+  overflow-x: auto;
 `;
 
 const JSONPasteArea = styled.textarea`
@@ -60,8 +83,17 @@ export default class Editor extends Component {
   };
 
   handleJSON = ({ target: { value: json } }) => {
+    const schema = createValidator();
     try {
       const parsed = JSON.parse(json);
+
+      if (!schema(parsed)) {
+        this.setState({
+          error: `Validation error: ${JSON.stringify(schema.errors)}`
+        });
+        return;
+      }
+
       console.log('parsed', parsed);
       this.setState({ editing: true, parsed });
     } catch (e) {
