@@ -1,12 +1,11 @@
 // @flow
 
-import * as React from 'react';
-
+import { Button } from './Controls';
+import Emoji from './Emoji';
+import { monospace } from '../styles/fonts';
 import styled from 'styled-components';
 import validator from 'is-my-json-valid';
-import Emoji from './Emoji';
-import { Button } from './Controls';
-import { monospace } from '../styles/fonts';
+import * as React from 'react';
 
 const UPPER_LIMIT = 100;
 const createValidator = () =>

@@ -1,10 +1,10 @@
 // @flow
 
-import React from 'react';
-import ms from 'ms';
-import styled from 'styled-components';
 import { Button } from './Controls';
 import { monospace } from '../styles/fonts';
+import ms from 'ms';
+import React from 'react';
+import styled from 'styled-components';
 
 const Tools = styled.div`
   margin-right: 1rem;
